@@ -24,7 +24,7 @@ namespace RestaurantAPI.Entities
 				.Property(r => r.Name)
 				.IsRequired();
 
-
+			
 		}
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
