@@ -16,6 +16,14 @@ namespace RestaurantAPI.Controllers
 	{
 		private readonly IRestaurantService _restaurantService;
 
+		[HttpDelete("{id}")]
+		public ActionResult Delete ([FromRoute]int id)
+		{
+			var isDeleted=_restaurantService.Delete(id);
+
+			if (isDeleted) return NoContent();
+			return NotFound();
+		}
 		public RestaurantController(IRestaurantService restaurantService)
 		{
 			_restaurantService = restaurantService;
