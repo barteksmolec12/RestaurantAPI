@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using RestaurantAPI.Entities;
-using RestaurantAPI.Models;
+using RestaurantAPI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
