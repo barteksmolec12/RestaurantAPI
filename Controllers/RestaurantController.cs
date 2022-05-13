@@ -9,12 +9,35 @@ using System.Linq;
 using System.Threading.Tasks;
 using RestaurantAPI.Services.Abstract;
 
+
 namespace RestaurantAPI.Controllers
 {
 	[Route("api/restaurant")]
 	public class RestaurantController : ControllerBase
 	{
 		private readonly IRestaurantService _restaurantService;
+
+		[HttpPut("{id}")]
+		public ActionResult Update([FromBody] UpdateRestaurantDto dto,[FromRoute] int id)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			var isUpdated = _restaurantService.Update(id, dto);
+
+			if (isUpdated == true)
+			{
+				return Ok();
+			}
+			else
+			{
+				return NotFound();
+			}
+		
+		}
+
 
 		[HttpDelete("{id}")]
 		public ActionResult Delete ([FromRoute]int id)
@@ -24,6 +47,7 @@ namespace RestaurantAPI.Controllers
 			if (isDeleted) return NoContent();
 			return NotFound();
 		}
+
 		public RestaurantController(IRestaurantService restaurantService)
 		{
 			_restaurantService = restaurantService;

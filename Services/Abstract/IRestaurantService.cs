@@ -11,5 +11,6 @@ namespace RestaurantAPI.Services.Abstract
 		IEnumerable<RestaurantDto> GetAll();
 		int Create(CreateRestaurantDto dto);
 		bool Delete(int id);
+		bool Update(int id, UpdateRestaurantDto dto);
 	}
 }
