@@ -38,9 +38,7 @@ namespace RestaurantAPI.Services
 			
 			_dbContext.Restaurant.Remove(restaurant);
 			_dbContext.SaveChanges();
-			
-
-
+		
 		
 		}
 		public RestaurantDto GetById(int id)

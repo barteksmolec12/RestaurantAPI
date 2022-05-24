@@ -13,7 +13,9 @@ using RestaurantAPI.Services.Abstract;
 namespace RestaurantAPI.Controllers
 {
 	[Route("api/restaurant")]
+	[Consumes("application/json")]
 	[ApiController]
+
 	public class RestaurantController : ControllerBase
 	{
 		private readonly IRestaurantService _restaurantService;
