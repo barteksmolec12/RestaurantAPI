@@ -12,6 +12,8 @@ namespace RestaurantAPI.Entities
 		public DbSet<Restaurant> Restaurant { get; set; }
 		public DbSet<Address> Address { get; set; }
 		public DbSet<Dish> Dish { get; set; }
+		public DbSet<User> Users { get; set; }
+		public DbSet<Role> Roles { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
