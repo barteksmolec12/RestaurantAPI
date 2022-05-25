@@ -1,4 +1,6 @@
 using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Middleware;
+using RestaurantAPI.Models.Validators;
 using RestaurantAPI.Services;
 using RestaurantAPI.Services.Abstract;
 using System;
@@ -32,7 +35,7 @@ namespace RestaurantAPI
 		public void ConfigureServices(IServiceCollection services)
 		{
 
-			services.AddControllers();
+			services.AddControllers().AddFluentValidation();
 			services.AddDbContext<RestaurantDbContext>();
 			services.AddScoped<RestaurantSeeder>();
 			services.AddScoped<IRestaurantService, RestaurantService>();
@@ -42,7 +45,9 @@ namespace RestaurantAPI
 			services.AddScoped<ErrorHandlingMiddleware>();
 			services.AddScoped<RequestTimeMiddleware>();
 			services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>> ();
+			services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 			services.AddSwaggerGen();
+
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

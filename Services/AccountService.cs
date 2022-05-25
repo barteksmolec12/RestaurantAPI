@@ -28,7 +28,7 @@ namespace RestaurantAPI.Services
 				RoleId=dto.RoleId
 			};
 
-			 var hashedPassword=_passwordHasher.HashPassword(user, dto.Password);
+			var hashedPassword =_passwordHasher.HashPassword(user, dto.Password);
 			user.PasswordHash = hashedPassword;
 			_dbContext.Users.Add(user);
 			_dbContext.SaveChanges();
