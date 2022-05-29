@@ -8,5 +8,6 @@ namespace RestaurantAPI.Services.Abstract
 	public interface IAccountService
 	{
 		 void RegisterUser(RegisterUserDto dto);
+		 string GenerateJwt(LoginUserDto dto);
 	}
 }
