@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using RestaurantAPI.Services.Abstract;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace RestaurantAPI.Controllers
 {
 	[Route("api/restaurant")]
 	[Consumes("application/json")]
 	[ApiController]
+	[Authorize]
 
 	public class RestaurantController : ControllerBase
 	{
@@ -23,12 +24,8 @@ namespace RestaurantAPI.Controllers
 		[HttpPut("{id}")]
 		public ActionResult Update([FromBody] UpdateRestaurantDto dto,[FromRoute] int id)
 		{
-			
 			_restaurantService.Update(id, dto);	
-			return Ok();
-			
-			
-		
+			return Ok();	
 		}
 
 
@@ -38,7 +35,6 @@ namespace RestaurantAPI.Controllers
 			_restaurantService.Delete(id);
 
 			return NoContent();
-			
 		}
 
 
@@ -49,6 +45,7 @@ namespace RestaurantAPI.Controllers
 
 
 		[HttpPost]
+		[Authorize(Roles = "Menager")]
 		public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
 		{
 			int id=_restaurantService.Create(dto);
@@ -57,15 +54,18 @@ namespace RestaurantAPI.Controllers
 
 
 		[HttpGet]
+		[Authorize(Policy = "Atleast20")] //własna polityka utworzona w startup.cs
 		public ActionResult<IEnumerable<RestaurantDto>> GetAll()
 		{
+			
 			var restaurantsDtos = _restaurantService.GetAll();	
 			return Ok(restaurantsDtos);
 		}
 
 
-		[Route("api/restaurant/{id}")]
+		
 		[HttpGet("{id}")]
+		[AllowAnonymous] //zapytania bez nagłówka autoryzacji
 		public ActionResult<RestaurantDto> Get([FromRoute]int id)
 		{
 			var restaurantDto = _restaurantService.GetById(id);
