@@ -79,12 +79,21 @@ namespace RestaurantAPI
 			services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>> ();
 			services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 			services.AddSwaggerGen();
+			services.AddCors(options =>
+			{
+				options.AddPolicy("FrontEndClient", builder =>
+
+					 builder.AllowAnyMethod()
+							 .AllowAnyHeader()
+							 .WithOrigins("https://localhost:44321"));
+			});
 
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env,RestaurantSeeder seeder)
 		{
+			app.UseCors("https://localhost:44321");
 			seeder.Seed();
 			if (env.IsDevelopment())
 			{
