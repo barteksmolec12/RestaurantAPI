@@ -65,6 +65,7 @@ namespace RestaurantAPI
 				option.AddPolicy("Atleast20", builder => builder.AddRequirements(new MinimumAgeRequirement(20)));
 			});
 
+			services.AddScoped<IAuthorizationHandler, ResourcesOperationRequirementHandler>();
 			services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
 			services.AddControllers().AddFluentValidation();
 			services.AddDbContext<RestaurantDbContext>();

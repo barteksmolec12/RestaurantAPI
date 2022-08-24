@@ -15,7 +15,7 @@ namespace RestaurantAPI.Authorization
 		public MinimumAgeRequirementHandler(ILogger<MinimumAgeRequirementHandler> logger)
 		{
 			_logger = logger;
-		}
+		}  
 		protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, MinimumAgeRequirement requirement)
 		{
 			var dateOfBirth=DateTime.Parse(context.User.FindFirst(c => c.Type == "DateOfBirth").Value);

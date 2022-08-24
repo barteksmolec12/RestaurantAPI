@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using RestaurantAPI.Services.Abstract;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace RestaurantAPI.Controllers
 {
@@ -24,7 +25,7 @@ namespace RestaurantAPI.Controllers
 		[HttpPut("{id}")]
 		public ActionResult Update([FromBody] UpdateRestaurantDto dto,[FromRoute] int id)
 		{
-			_restaurantService.Update(id, dto);	
+			_restaurantService.Update(id, dto,User);	
 			return Ok();	
 		}
 
@@ -32,7 +33,7 @@ namespace RestaurantAPI.Controllers
 		[HttpDelete("{id}")]
 		public ActionResult Delete ([FromRoute]int id)
 		{
-			_restaurantService.Delete(id);
+			_restaurantService.Delete(id,User);
 
 			return NoContent();
 		}
@@ -48,14 +49,15 @@ namespace RestaurantAPI.Controllers
 		[Authorize(Roles = "Menager")]
 		public ActionResult CreateRestaurant([FromBody] CreateRestaurantDto dto)
 		{
-			int id=_restaurantService.Create(dto);
+			var userId=int.Parse(User.FindFirst(c=>c.Type == ClaimTypes.NameIdentifier).Value);
+			int id=_restaurantService.Create(dto, userId);
 			return Created($"/api/restaurant/{id}",null); //informacja że utworzono zasób na serwerze
 		}
 
 
 		[HttpGet]
 		[Authorize(Policy = "Atleast20")] //własna polityka utworzona w startup.cs
-		public ActionResult<IEnumerable<RestaurantDto>> GetAll()
+		public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery] string searchPhrase, [FromQuery] int pageNumber, [FromQuery] int pageSize)
 		{
 			
 			var restaurantsDtos = _restaurantService.GetAll();	
