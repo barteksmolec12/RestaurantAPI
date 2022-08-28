@@ -93,7 +93,9 @@ namespace RestaurantAPI
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env,RestaurantSeeder seeder)
 		{
-			app.UseCors("https://localhost:44321");
+			//  app.UseCors("https://localhost:44321");
+			app.UseStaticFiles();
+		
 			seeder.Seed();
 			if (env.IsDevelopment())
 			{
