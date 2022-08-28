@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using RestaurantAPI.Services.Abstract;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using RestaurantAPI.Models;
 
 namespace RestaurantAPI.Controllers
 {
@@ -57,10 +58,10 @@ namespace RestaurantAPI.Controllers
 
 		[HttpGet]
 		[Authorize(Policy = "Atleast20")] //własna polityka utworzona w startup.cs
-		public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery] string searchPhrase, [FromQuery] int pageNumber, [FromQuery] int pageSize)
+		public ActionResult<IEnumerable<RestaurantDto>> GetAll([FromQuery] RestaurantQuery query)
 		{
 			
-			var restaurantsDtos = _restaurantService.GetAll();	
+			var restaurantsDtos = _restaurantService.GetAll(query);	
 			return Ok(restaurantsDtos);
 		}
 

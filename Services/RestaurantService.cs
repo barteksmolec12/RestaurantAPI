@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using RestaurantAPI.Authorization;
 using RestaurantAPI.Entities;
 using RestaurantAPI.Exceptions;
+using RestaurantAPI.Models;
 using RestaurantAPI.Services.Abstract;
 using System;
 using System.Collections.Generic;
@@ -66,13 +67,17 @@ namespace RestaurantAPI.Services
 			return result;
 
 		}
-		public IEnumerable<RestaurantDto> GetAll()
+		public IEnumerable<RestaurantDto> GetAll(RestaurantQuery query)
 
 		{
 			var restaurants = _dbContext
 				.Restaurant
 				.Include(r => r.Address)
 				.Include(r => r.Dishes)
+				.Where(r => query.SearchPhrase == null || (r.Name.ToLower().Contains(query.SearchPhrase.ToLower())
+														|| r.Description.ToLower().Contains(query.SearchPhrase.ToLower())))
+				.Skip(query.PageSize * query.PageNumber - 1)
+				.Take(query.PageSize)
 				.ToList();
 
 			var result = _mapper.Map<List<RestaurantDto>>(restaurants);
