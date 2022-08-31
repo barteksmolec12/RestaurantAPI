@@ -1,7 +1,9 @@
-﻿using RestaurantAPI.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using RestaurantAPI.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace RestaurantAPI
@@ -16,7 +18,16 @@ namespace RestaurantAPI
 		public void Seed()
 		{
 			if (_dbContext.Database.CanConnect())
-			{  
+			{
+
+                var pendingMigrations=_dbContext.Database.GetPendingMigrations();
+                
+                if(pendingMigrations != null && pendingMigrations.Any())
+                {
+                    _dbContext.Database.Migrate();
+                }
+
+
                 if (!_dbContext.Roles.Any())
                 {
 
