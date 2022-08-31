@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -68,7 +69,8 @@ namespace RestaurantAPI
 			services.AddScoped<IAuthorizationHandler, ResourcesOperationRequirementHandler>();
 			services.AddScoped<IAuthorizationHandler, MinimumAgeRequirementHandler>();
 			services.AddControllers().AddFluentValidation();
-			services.AddDbContext<RestaurantDbContext>();
+			services.AddDbContext<RestaurantDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("RestaurantDbConnection")));
+
 			services.AddScoped<RestaurantSeeder>();
 			services.AddScoped<IRestaurantService, RestaurantService>();
 			services.AddScoped<IDishService, DishService>();
